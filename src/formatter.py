@@ -25,15 +25,8 @@ class NewsItem:
 class ArticleFormatter:
     """Formats processed tweets into a Markdown article."""
 
-    # Emoji pool for news items
-    EMOJIS = ["🚀", "✨", "💡", "🔥", "🎯", "📢", "🆕", "⚡", "🌟", "💫"]
-
     def __init__(self, template_path: Optional[str] = None):
         self.template_path = template_path
-
-    def _get_emoji(self, index: int) -> str:
-        """Get an emoji for a news item."""
-        return self.EMOJIS[index % len(self.EMOJIS)]
 
     def create_news_item(
         self,
@@ -50,7 +43,7 @@ class ArticleFormatter:
             summary_ja=summary_ja,
             url=processed_tweet.url,
             images=[f"./images/{Path(p).name}" for p in local_images],
-            emoji=self._get_emoji(index),
+            emoji="",
             created_at=processed_tweet.created_at
         )
 
@@ -64,7 +57,7 @@ class ArticleFormatter:
     def format_news_item(self, item: NewsItem, index: int) -> str:
         """Format a single news item."""
         lines = [
-            f"## {index}. 【{item.source}】{item.title} {item.emoji}",
+            f"## {index}. 【{item.source}】{item.title}",
             ""
         ]
 
@@ -78,9 +71,6 @@ class ArticleFormatter:
         lines.append(item.summary_ja)
         lines.append("")
         
-        # Add link to original
-        lines.append(f"📎 [原文を見る]({item.url})")
-        lines.append("")
         lines.append("---")
         
         return "\n".join(lines)
@@ -106,7 +96,7 @@ class ArticleFormatter:
             return self._format_no_news(date, datetime_str)
 
         lines = [
-            f"# 🤖 AI最新ニュース【{date}】",
+            f"# AI最新ニュース【{date}】",
             "",
             "> 本日のAI業界の最新ニュースをお届けします。",
             "",
@@ -123,7 +113,7 @@ class ArticleFormatter:
 
         # Footer
         lines.extend([
-            f"📅 更新日時：{datetime_str}",
+            f"更新日時：{datetime_str}",
             "",
             "---",
             "",
@@ -134,13 +124,13 @@ class ArticleFormatter:
 
     def _format_no_news(self, date: str, datetime_str: str) -> str:
         """Format article when there's no news."""
-        return f"""# 🤖 AI最新ニュース【{date}】
+        return f"""# AI最新ニュース【{date}】
 
 > 本日は特に大きなニュースはありませんでした。
 
 明日また最新ニュースをお届けします！
 
-📅 更新日時：{datetime_str}
+更新日時：{datetime_str}
 
 ---
 
@@ -170,7 +160,7 @@ class ArticleFormatter:
         file_path = output_path / filename
         file_path.write_text(content, encoding='utf-8')
         
-        print(f"📄 Saved article to {file_path}")
+        print(f"Saved article to {file_path}")
         return str(file_path)
 
 
