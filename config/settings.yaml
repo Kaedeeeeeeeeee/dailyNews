@@ -1,0 +1,19 @@
+# Global settings for AI News Collector
+
+scraping:
+  hours_lookback: 24        # Fetch tweets from the last N hours
+  max_tweets_per_account: 10  # Maximum tweets to fetch per account
+
+ai:
+  model: "gemini-3-flash-preview"  # Gemini model to use
+  summary_max_chars: 300     # Maximum characters for summary
+  language: "ja"             # Output language (Japanese)
+
+image:
+  max_width: 1280            # Maximum image width
+  max_height: 1000           # Maximum image height
+  quality: 85                # JPEG quality (1-100)
+
+output:
+  timezone: "Asia/Tokyo"     # Timezone for article dates
+  format: "markdown"         # Output format

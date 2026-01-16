@@ -1,0 +1,90 @@
+name: Daily AI News Collection
+
+on:
+  schedule:
+    # Run at 21:30 UTC (6:30 JST next day)
+    - cron: '30 21 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  collect-news:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run news collector
+        env:
+          X_USERNAME: ${{ secrets.X_USERNAME }}
+          X_PASSWORD: ${{ secrets.X_PASSWORD }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python main.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Check if there are changes
+          if [ -n "$(git status --porcelain output/)" ]; then
+            git add output/
+            git commit -m "📰 Daily AI news update - $(date -u +%Y-%m-%d)"
+            git push
+            echo "✅ Changes committed and pushed"
+          else
+            echo "ℹ️ No changes to commit"
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-news-${{ github.run_number }}
+          path: output/
+          retention-days: 30
+
+      - name: Get article content
+        id: article
+        run: |
+          # Find today's article
+          TODAY=$(date -u +%Y-%m-%d)
+          ARTICLE_PATH="output/${TODAY}/article.md"
+          
+          if [ -f "$ARTICLE_PATH" ]; then
+            echo "article_found=true" >> $GITHUB_OUTPUT
+            echo "article_path=$ARTICLE_PATH" >> $GITHUB_OUTPUT
+            # Get first 100 lines for email preview
+            head -100 "$ARTICLE_PATH" > /tmp/article_preview.md
+          else
+            echo "article_found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send email notification
+        if: steps.article.outputs.article_found == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "🤖 AI最新ニュース【${{ github.run_id }}】"
+          to: ${{ secrets.EMAIL_TO }}
+          from: AI News Bot <${{ secrets.EMAIL_USERNAME }}>
+          body: |
+            本日のAIニュースをお届けします！
+            
+            📎 GitHub で全文を見る: 
+            https://github.com/${{ github.repository }}/blob/main/${{ steps.article.outputs.article_path }}
+            
+            ---
+            このメールは GitHub Actions により自動送信されています。
+          attachments: ${{ steps.article.outputs.article_path }}
