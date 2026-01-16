@@ -127,16 +127,16 @@ async def main():
     print("\n📸 Step 4: Downloading images...")
     image_map = await image_handler.process_all_tweets(processed_tweets)
 
-    # Step 5: Translate to Japanese
-    print("\n🇯🇵 Step 5: Translating to Japanese...")
+    # Step 5: Generate titles and format
+    print("\nStep 5: Generating titles...")
     news_items = []
     
     for i, tweet in enumerate(processed_tweets):
-        # Translate summary
-        summary_ja = await translator.translate_to_japanese(tweet.summary)
+        # Summary is already in Japanese from AI processor
+        summary_ja = tweet.summary
         
         # Generate title
-        title = await translator.generate_title(tweet.summary, tweet.author_name)
+        title = await translator.generate_title(summary_ja, tweet.author_name)
         
         # Get local images
         local_images = image_map.get(tweet.id, [])
