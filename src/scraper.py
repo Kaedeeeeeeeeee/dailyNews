@@ -35,20 +35,34 @@ class TwitterScraper:
         self.client = Client('en-US')
 
     async def login(self) -> bool:
-        """Login to X/Twitter. Uses cookies if available."""
+        """Login to X/Twitter. Uses cookies from env or file if available."""
         try:
+            # Priority 1: Load cookies from environment variables (for GitHub Actions)
+            auth_token = os.getenv('AUTH_TOKEN')
+            ct0 = os.getenv('CT0')
+            
+            if auth_token and ct0:
+                self.client.set_cookies({
+                    'auth_token': auth_token,
+                    'ct0': ct0
+                })
+                print("✅ Loaded cookies from environment variables")
+                return True
+            
+            # Priority 2: Load cookies from file
             if os.path.exists(self.cookies_path):
                 self.client.load_cookies(self.cookies_path)
                 print("✅ Loaded cookies from file")
                 return True
-            else:
-                await self.client.login(
-                    auth_info_1=self.username,
-                    password=self.password
-                )
-                self.client.save_cookies(self.cookies_path)
-                print("✅ Logged in and saved cookies")
-                return True
+            
+            # Priority 3: Login with username/password
+            await self.client.login(
+                auth_info_1=self.username,
+                password=self.password
+            )
+            self.client.save_cookies(self.cookies_path)
+            print("✅ Logged in and saved cookies")
+            return True
         except Exception as e:
             print(f"❌ Login failed: {e}")
             return False
