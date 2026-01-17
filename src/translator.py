@@ -79,19 +79,20 @@ class Translator:
         Generate a short Japanese title for the news item.
         
         Args:
-            summary: News summary
+            summary: News summary (may be in English or Japanese)
             author: Author/company name
             
         Returns:
             Short Japanese title
         """
-        prompt = f"""以下のニュース要約から、短いタイトル（15文字以内）を作成してください。
+        prompt = f"""以下のニュース内容から、日本語で短いタイトル（15文字以内）を作成してください。
+内容が英語の場合は、日本語に翻訳してタイトルを作成してください。
 タイトルのみを出力し、他に何も含めないでください。
 
-要約：{summary}
+内容：{summary[:200]}
 発信元：{author}
 
-タイトル："""
+日本語タイトル："""
 
         try:
             response = await asyncio.to_thread(
@@ -101,11 +102,28 @@ class Translator:
             )
             title = response.text.strip()
             # Remove quotes if present
-            title = title.strip('"\'「」『』')
-            return title
-        except Exception as e:
-            print(f"❌ Title generation failed: {e}")
+            title = title.strip('"\'"「」『』')
+            if title:
+                return title
             return "最新ニュース"
+        except Exception as e:
+            print(f"Title generation failed (will retry): {e}")
+            # Retry once
+            try:
+                await asyncio.sleep(2)
+                response = await asyncio.to_thread(
+                    self.client.models.generate_content,
+                    model=self.model_name,
+                    contents=prompt
+                )
+                title = response.text.strip()
+                title = title.strip('"\'"「」『』')
+                if title:
+                    return title
+                return "最新ニュース"
+            except Exception as e2:
+                print(f"Title generation failed after retry: {e2}")
+                return "最新ニュース"
 
 
 async def main():

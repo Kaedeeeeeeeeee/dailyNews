@@ -111,11 +111,25 @@ class AIProcessor:
                 summary = summary[:max_chars-3] + "..."
             return summary
         except Exception as e:
-            print(f"❌ Summary generation failed: {e}")
-            # Fallback: truncate original content
-            if len(content) > max_chars:
-                return content[:max_chars-3] + "..."
-            return content
+            print(f"Summary generation failed (will retry): {e}")
+            # Retry once
+            try:
+                await asyncio.sleep(2)
+                response = await asyncio.to_thread(
+                    self.client.models.generate_content,
+                    model=self.model_name,
+                    contents=prompt
+                )
+                summary = response.text.strip()
+                if len(summary) > max_chars:
+                    summary = summary[:max_chars-3] + "..."
+                return summary
+            except Exception as e2:
+                print(f"Summary generation failed after retry: {e2}")
+                # Fallback: return original but mark it
+                if len(content) > max_chars:
+                    return content[:max_chars-3] + "..."
+                return content
 
     async def process_tweet(self, tweet, max_summary_chars: int = 300) -> Optional[ProcessedTweet]:
         """
