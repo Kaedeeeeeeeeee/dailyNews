@@ -92,7 +92,7 @@ def add_date_to_cover(
     
     # 添加轻微的阴影效果增加立体感
     shadow_color = "#8B4513"  # 深棕色
-    shadow_offset = 2
+    shadow_offset = max(2, int(font_size * 0.05))  # 根据字体大小调整阴影
     
     # 绘制阴影
     draw.text(
@@ -126,7 +126,7 @@ def main():
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
     # 输入输出路径
-    input_path = os.path.join(project_root, "assets", "cover_template.jpg")
+    input_path = os.path.join(project_root, "assets", "Untitled design.png")
     output_dir = os.path.join(project_root, "output")
     os.makedirs(output_dir, exist_ok=True)
     

@@ -45,7 +45,7 @@ jobs:
           os.makedirs(output_dir, exist_ok=True)
           
           add_date_to_cover(
-              'assets/cover_template.png',
+              'assets/Untitled design.png',
               f'{output_dir}/cover.png',
               today
           )
