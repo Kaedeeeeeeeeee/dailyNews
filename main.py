@@ -3,6 +3,8 @@ AI News Collector - Main Entry Point
 
 Collects AI-related news from X/Twitter, processes with AI,
 translates to Japanese, and generates a Markdown article.
+
+Optimized for parallel processing.
 """
 
 import os
@@ -18,8 +20,6 @@ load_dotenv()
 
 from src.scraper import TwitterScraper
 from src.ai_processor import AIProcessor
-from src.image_handler import ImageHandler
-from src.translator import Translator
 from src.formatter import ArticleFormatter, NewsItem
 
 
@@ -39,7 +39,7 @@ def load_config():
 async def main():
     """Main execution flow."""
     print("=" * 60)
-    print("🤖 AI News Collector - Starting")
+    print("🤖 AI News Collector - Starting (Optimized)")
     print("=" * 60)
 
     # Load configuration
@@ -58,8 +58,11 @@ async def main():
 
     # Initialize components
     scraper = TwitterScraper(x_username, x_password)
-    ai_processor = AIProcessor(gemini_api_key, settings["ai"]["model"])
-    translator = Translator(gemini_api_key, settings["ai"]["model"])
+    ai_processor = AIProcessor(
+        gemini_api_key, 
+        settings["ai"]["model"],
+        max_concurrent=10  # Process 10 tweets in parallel
+    )
     formatter = ArticleFormatter()
 
     # Get current date in JST
@@ -71,15 +74,7 @@ async def main():
 
     # Create output directory
     output_dir = Path(__file__).parent / "output" / output_date
-    images_dir = output_dir / "images"
-    images_dir.mkdir(parents=True, exist_ok=True)
-
-    image_handler = ImageHandler(
-        str(images_dir),
-        max_width=settings["image"]["max_width"],
-        max_height=settings["image"]["max_height"],
-        quality=settings["image"]["quality"]
-    )
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     # Step 1: Login to X
     print("\n📡 Step 1: Logging in to X...")
@@ -87,12 +82,13 @@ async def main():
         print("❌ Failed to login to X. Exiting.")
         return
 
-    # Step 2: Scrape tweets
-    print("\n📥 Step 2: Scraping tweets...")
+    # Step 2: Scrape tweets (parallel)
+    print("\n📥 Step 2: Scraping tweets (parallel)...")
     all_tweets = await scraper.scrape_all_accounts(
         accounts,
         since_hours=settings["scraping"]["hours_lookback"],
-        max_tweets_per_account=settings["scraping"]["max_tweets_per_account"]
+        max_tweets_per_account=settings["scraping"]["max_tweets_per_account"],
+        max_concurrent=5  # 5 concurrent scraping tasks
     )
 
     # Flatten all tweets
@@ -110,8 +106,8 @@ async def main():
 
     print(f"📊 Total tweets to process: {len(tweets_list)}")
 
-    # Step 3: Process with AI
-    print("\n🤖 Step 3: Processing with AI...")
+    # Step 3: Process with AI (parallel, single call per tweet)
+    print("\n🤖 Step 3: Processing with AI (parallel)...")
     processed_tweets = await ai_processor.batch_process(
         tweets_list,
         max_summary_chars=settings["ai"]["summary_max_chars"]
@@ -123,36 +119,24 @@ async def main():
         formatter.save_article(article, str(output_dir))
         return
 
-    # Step 4: Download images
-    print("\n📸 Step 4: Downloading images...")
-    image_map = await image_handler.process_all_tweets(processed_tweets)
-
-    # Step 5: Generate titles and format
-    print("\nStep 5: Generating titles...")
+    # Step 4: Format article (title already generated in AI processing)
+    print("\n📝 Step 4: Generating article...")
     news_items = []
     
     for i, tweet in enumerate(processed_tweets):
-        # Summary is already in Japanese from AI processor
-        summary_ja = tweet.summary
-        
-        # Generate title
-        title = await translator.generate_title(summary_ja, tweet.author_name)
-        
-        # Get local images
-        local_images = image_map.get(tweet.id, [])
-        
-        # Create news item
-        news_item = formatter.create_news_item(
-            tweet,
-            summary_ja,
-            title,
-            local_images,
-            i
+        # Create news item (title and summary already available from AI processor)
+        news_item = NewsItem(
+            source=tweet.author_name,
+            title=tweet.title,
+            summary_ja=tweet.summary,
+            url=tweet.url,
+            images=[],  # No images
+            emoji="",
+            created_at=tweet.created_at
         )
         news_items.append(news_item)
 
-    # Step 6: Generate article
-    print("\n📝 Step 6: Generating article...")
+    # Generate and save article
     article = formatter.format_article(date_str, datetime_str, news_items)
     output_path = formatter.save_article(article, str(output_dir))
 
@@ -162,10 +146,10 @@ async def main():
     print("=" * 60)
     print(f"📅 Date: {date_str}")
     print(f"📰 News items: {len(news_items)}")
-    print(f"📸 Images downloaded: {sum(len(v) for v in image_map.values())}")
     print(f"📄 Output: {output_path}")
     print("=" * 60)
 
 
 if __name__ == "__main__":
     asyncio.run(main())
+

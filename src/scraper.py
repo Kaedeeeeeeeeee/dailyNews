@@ -127,39 +127,56 @@ class TwitterScraper:
         self,
         accounts: list[dict],
         since_hours: int = 24,
-        max_tweets_per_account: int = 10
+        max_tweets_per_account: int = 10,
+        max_concurrent: int = 5
     ) -> dict[str, list[Tweet]]:
         """
-        Scrape tweets from multiple accounts.
+        Scrape tweets from multiple accounts in parallel.
         
         Args:
             accounts: List of account dicts with 'username' key
             since_hours: Only fetch tweets from the last N hours
             max_tweets_per_account: Maximum tweets per account
+            max_concurrent: Maximum number of concurrent requests
             
         Returns:
             Dict mapping username to list of tweets
         """
+        semaphore = asyncio.Semaphore(max_concurrent)
+        
+        async def fetch_with_semaphore(username: str) -> tuple[str, list[Tweet]]:
+            async with semaphore:
+                tweets = await self.get_user_tweets(
+                    screen_name=username,
+                    since_hours=since_hours,
+                    max_tweets=max_tweets_per_account
+                )
+                return username, tweets
+        
+        # Filter valid usernames
+        usernames = [acc.get('username', '') for acc in accounts if acc.get('username')]
+        
+        print(f"🚀 Scraping {len(usernames)} accounts in parallel (max {max_concurrent} concurrent)...")
+        
+        # Create tasks for all accounts
+        tasks = [fetch_with_semaphore(username) for username in usernames]
+        
+        # Execute all tasks in parallel
+        results_list = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # Build results dict
         results = {}
         total_tweets = 0
+        
+        for result in results_list:
+            if isinstance(result, tuple):
+                username, tweets = result
+                results[username] = tweets
+                total_tweets += len(tweets)
+            elif isinstance(result, Exception):
+                print(f"⚠️ Task failed: {result}")
 
-        for account in accounts:
-            username = account.get('username', '')
-            if not username:
-                continue
-
-            tweets = await self.get_user_tweets(
-                screen_name=username,
-                since_hours=since_hours,
-                max_tweets=max_tweets_per_account
-            )
-            results[username] = tweets
-            total_tweets += len(tweets)
-
-            # Rate limiting - small delay between requests
-            await asyncio.sleep(1)
-
-        print(f"\n📊 Total: {total_tweets} tweets from {len(accounts)} accounts")
+        print(f"\n📊 Total: {total_tweets} tweets from {len(results)} accounts")
         return results
 
 
