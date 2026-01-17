@@ -57,17 +57,17 @@ jobs:
       - name: Get article content
         id: article
         run: |
-          # Find today's article
-          TODAY=$(date -u +%Y-%m-%d)
-          ARTICLE_PATH="output/${TODAY}/article.md"
+          # Find the latest article (most recent directory in output/)
+          LATEST_DIR=$(ls -td output/*/ 2>/dev/null | head -1)
           
-          if [ -f "$ARTICLE_PATH" ]; then
+          if [ -n "$LATEST_DIR" ] && [ -f "${LATEST_DIR}article.md" ]; then
+            ARTICLE_PATH="${LATEST_DIR}article.md"
             echo "article_found=true" >> $GITHUB_OUTPUT
             echo "article_path=$ARTICLE_PATH" >> $GITHUB_OUTPUT
-            # Get first 100 lines for email preview
-            head -100 "$ARTICLE_PATH" > /tmp/article_preview.md
+            echo "Found article: $ARTICLE_PATH"
           else
             echo "article_found=false" >> $GITHUB_OUTPUT
+            echo "No article found"
           fi
 
       - name: Send email notification
