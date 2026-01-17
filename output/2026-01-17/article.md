@@ -4,219 +4,161 @@
 
 ## 目次
 
-1. [OpenAI] 最新ニュース
-2. [OpenAI] 最新ニュース
-3. [OpenAI] 最新ニュース
-4. [Anthropic] 最新ニュース
-5. [Replit ⠕] 最新ニュース
-6. [Replit ⠕] 最新ニュース
-7. [Replit ⠕] 最新ニュース
-8. [Replit ⠕] 最新ニュース
-9. [Replit ⠕] 最新ニュース
-10. [GitHub] 最新ニュース
-11. [GitHub] 最新ニュース
-12. [GitHub] 最新ニュース
-13. [Vercel] 最新ニュース
-14. [OpenCode] 最新ニュース
-15. [OpenCode] 最新ニュース
-16. [MiniMax (official)] 最新ニュース
-17. [MiniMax (official)] 最新ニュース
-18. [MiniMax (official)] 最新ニュース
-19. [MiniMax (official)] 最新ニュース
-20. [MiniMax (official)] 最新ニュース
-21. [StepFun] 最新ニュース
-22. [StepFun] 最新ニュース
+1. [OpenAI] アルトマン氏、マスク氏に反論
+2. [OpenAI] 安価版ChatGPT Go登場
+3. [OpenAI] ChatGPTに広告テスト開始
+4. [ChatGPT] ChatGPTメモリ機能を絶賛
+5. [Replit ⠕] AIとの対話だけでアプリを構築
+6. [Replit ⠕] Replit、アプリを直接公開
+7. [Replit ⠕] Replitアプリ開発から公開まで
+8. [Replit ⠕] Replitアプリ開発から公開まで
+9. [GitHub] AIコード、94％が型エラー
+10. [GitHub] OSFにIvy氏登壇、最新AI情報も
+11. [Vercel] AWS DBがVercelで利用可能
+12. [OpenCode] GitLab Duo、Claude全モデル対応
+13. [MiniMax (official)] Slack新ツールKilo公開
+14. [MiniMax (official)] 次世代AI、予想より早く登場か
+15. [MiniMax (official)] MiniMaxサンノゼ開発支援
+16. [Z.ai] Z.ai米州限定で無料実験開始
+17. [StepFun] Step3-VLがHF注目論文に
 
 ---
 
-## 1. 【OpenAI】最新ニュース
+## 1. 【OpenAI】アルトマン氏、マスク氏に反論
 
-ChatGPT Go is rolling out globally in every country where ChatGPT is available.
+OpenAIのSam Altman氏は、Elon Musk氏によるGreg Brockman氏への批判に対し、Musk氏が情報を意図的に選別（チェリーピッキング）して事実を歪めていると反論しました。
 
-ChatGPT Go is our low-cost subscription tier that gives you 10x more messages, file uploads and image creation vs free tier, more memory, longer context window, and unlimited use of GPT 5.2 instant
-
----
-
-## 2. 【OpenAI】最新ニュース
-
-In the coming weeks, we plan to start testing ads in ChatGPT free and Go tiers.
-
-We’re sharing our principles early on how we’ll approach ads–guided by putting user trust and transparency first as we work to make AI accessible to everyone.
-
-What matters most:
-- Responses in https://t.co/3UQJsdriYR
+OpenAIはこれに関連し、2015年から2018年にかけての内部メールを公開しました。文書では、当時Musk氏がOpenAIの営利団体化を支持し、同社をTeslaに統合して自身が完全に制御することを提案していた経緯が詳述されています。今回の反論は、OpenAIが当初の非営利目的を放棄したとするMusk氏の提訴に対抗するもので、同氏の主張と過去の行動における矛盾を客観的な証拠に基づいて指摘...
 
 ---
 
-## 3. 【OpenAI】最新ニュース
+## 2. 【OpenAI】安価版ChatGPT Go登場
 
-RT @_samirism: we've been improving memory.
+OpenAIは、新しい低価格サブスクリプションプラン「ChatGPT Go」を、ChatGPTが提供されているすべての国で順次展開することを発表しました。
 
-ChatGPT is now more reliable at finding and remembering details from your past chats, like rec…
-
----
-
-## 4. 【Anthropic】最新ニュース
-
-We're publishing our 4th Anthropic Economic Index report.
-
-This version introduces "economic primitives"—simple and foundational metrics on how AI is used: task complexity, education level, purpose (work, school, personal), AI autonomy, and success rates.
+本プランは無料版と比較して、メッセージ送信、ファイルアップロード、画像生成の回数が10倍に設定されています。また、メモリ機能の拡張やコンテキストウィンドウの長大化に加え、最新モデル「GPT 5.2 instant」を無制限に利用できる点が特徴です。コストを抑えつつ、高度な機能を頻繁に利用したいユーザー向けのプランとなっています。
 
 ---
 
-## 5. 【Replit ⠕】最新ニュース
+## 3. 【OpenAI】ChatGPTに広告テスト開始
 
-Start. Build. Scale. Now straight to the App Store 🚀 https://t.co/NzrvixEQV1
+OpenAIは、今後数週間以内にChatGPTの「free」および「Go」ティアにおいて、広告表示のテストを開始する計画を発表しました。
 
----
-
-## 6. 【Replit ⠕】最新ニュース
-
-Mobile Apps by Replit: From Idea to App Store https://t.co/kzRIbeLABr
+同社は、AIをあらゆる人々が利用可能にすることを目指しており、ユーザーの信頼と透明性を最優先事項として掲げています。広告の導入に際しては、これらの基本原則に基づいたアプローチを徹底する方針です。現在は、広告運用の指針となる原則を早期段階で共有し、ユーザーへの配慮を強調しています。
 
 ---
 
-## 7. 【Replit ⠕】最新ニュース
+## 4. 【ChatGPT】ChatGPTメモリ機能を絶賛
 
-RT @MannyBernabe: 🚀 LIVE TODAY: Mobile Apps by Replit
+OpenAIのCEOであるSam Altman氏は、自身のSNSにて、ChatGPTに導入された新しいメモリ機能の改善について「素晴らしい（awesome）」と言及しました。
 
-Build in Replit. Ship to the App Store.
-
-Replit just launched mobile apps. Now you c…
+このアップデートにより、ChatGPTは過去の会話内容やユーザーの好みをより効果的に保持し、個々の利用シーンに合わせた一貫性のある応答が可能になると期待されています。具体的な技術的詳細は言及されていませんが、パーソナライズされたユーザー体験のさらなる向上が図られています。
 
 ---
 
-## 8. 【Replit ⠕】最新ニュース
+## 5. 【Replit ⠕】AIとの対話だけでアプリを構築
 
-Last week, @mattyp dropped an insightful video about using Replit with Claude Code, and one thing really stood out was the power of working in a true sandbox environment.
+Manny Bernabe氏は来週、Snowflake Developersと共同でライブ配信を実施します。
 
-Here's why this matters for builders experimenting with AI coding agents:
-
-🦺 Safe experimentation: Since https://t.co/sSnFltJdRz
+本セッションではReplitを活用し、SQLや従来のプログラミングを一切行わない「Vibe coding（バイブ・コーディング）」によるデータアプリケーションの構築を実演します。AIとの自然言語対話のみを用いて、ゼロからアプリケーションを開発する新たな手法を紹介する予定です。
 
 ---
 
-## 9. 【Replit ⠕】最新ニュース
+## 6. 【Replit ⠕】Replit、アプリを直接公開
 
-We’re kicking off our first Replit Buildathon of the year to celebrate Replit Mobile! 🚀 Sign up now ahead of the kickoff on Friday. Can’t wait to build together with the community. 🛠️
+特定の開発プラットフォームにおいて、アプリケーションの構築からApp Storeへの公開までを一貫して実行できる新機能が発表されました。
 
-https://t.co/KhTQzEgk6X https://t.co/mefs8WiOZe
-
----
-
-## 10. 【GitHub】最新ニュース
-
-Imagine if 94% of your compilation errors just … vanished. Your skin would clear. The laundry would be folded. ✨ 
-
-A new study shows that’s exactly the percentage of LLM errors that are just type-check failures.
-
-@cassidoo explains why AI is settling the "typed vs. untyped"
+本機能により、開発者は「Start（開始）、Build（構築）、Scale（拡張）」の各プロセスをシームレスに進め、直接App Storeへアプリを配信することが可能となります。開発から市場投入までの工程を大幅に簡略化し、効率的なデプロイメントを実現するアップデートとなっています。
 
 ---
 
-## 11. 【GitHub】最新ニュース
+## 7. 【Replit ⠕】Replitアプリ開発から公開まで
 
-Today on Open Source Friday 🎙️
+Replitは、モバイルアプリの開発からApp Store等への公開までを一気通貫でサポートする新機能を発表しました。本機能により、開発者は環境構築の手間を省き、アイデアの構想からビルド、テスト、配信までをプラットフォーム上で完結できます。
 
-@dennisivy11 from @appwrite joins us to chat:
-• building in public with open source
-• full-stack development workflows  
-• community-driven product development
-• migration strategies between platforms
-
-Plus, tune in for hints at an exciting AI https://t.co/0Lf60nngxV
+Replit AIによるコーディング支援に加え、React NativeやExpoを活用したクロスプラットフォーム開発に対応しています。モバイル端末から直接コード編集やプレビューが可能で、App StoreやGoogle Playへのデプロイプロセスも大幅に簡略化されました。専門的な設定を必要とせず、迅速かつ効率的に高品質なアプリを市場に投入できる...
 
 ---
 
-## 12. 【GitHub】最新ニュース
+## 8. 【Replit ⠕】Replitアプリ開発から公開まで
 
-GitHub Copilot now remembers what it learns across your workflow.
+Replitは、モバイルアプリの開発から配信までを完結させる新機能「Mobile Apps by Replit」をリリースしました。
 
-➡️  Copilot coding agent, CLI, and code review share knowledge automatically
-➡️  Memories include citations that get verified in real-time before use
-➡️  Outdated information self-heals as agents discover
+本機能の導入により、開発者はReplit上で構築したアプリケーションを、直接App Storeへ公開することが可能になります。開発環境と配信プロセスをシームレスに統合することで、モバイルアプリの市場投入までの工程を大幅に簡略化する画期的なアップデートとなっています。
 
 ---
 
-## 13. 【Vercel】最新ニュース
+## 9. 【GitHub】AIコード、94％が型エラー
 
-AWS databases are now on the Vercel Marketplace and v0.
+最新の研究により、LLM（大規模言語モデル）が生成したコードにおけるコンパイルエラーの94％が、単純な型チェックの失敗（type-check failures）に起因していることが明らかになりました。
 
-With one click, spin up secure, production-ready databases like Aurora PostgreSQL, Amazon DynamoDB, and Aurora DSQL.
-
-Set up in seconds, and your databases are instantly ready to scale. https://t.co/YXWVgpd3G9
+このデータに基づき、@cassidoo 氏は、AIの台頭がプログラミングにおける「型付き（typed）対 型なし（untyped）」の長年の議論に終止符を打つ可能性について解説しています。型システムの導入によりAI由来のエラーの大部分が解消されることが示唆されており、AI支援開発における静的型付けの重要性が改めて浮き彫りとなっています。
 
 ---
 
-## 14. 【OpenCode】最新ニュース
+## 10. 【GitHub】OSFにIvy氏登壇、最新AI情報も
 
-OpenCode can now officially be used with your GitLab Duo subscription
+本日開催の「Open Source Friday」に、AppwriteのDennis Ivy氏が登壇します。主なトピックは、オープンソースを用いた公開開発（Building in public）、フルスタック開発のワークフロー、コミュニティ主導の製品開発、およびプラットフォーム間の移行戦略です。
 
-all claude models (sonnet, opus and haiku) are available
-
-enjoy https://t.co/CsAtrwCu4x
+また、番組内では注目のAI技術に関する最新情報も示唆される予定です。開発手法の最適化やコミュニティとの連携に関心を持つ技術者にとって、示唆に富む内容となっています。
 
 ---
 
-## 15. 【OpenCode】最新ニュース
+## 11. 【Vercel】AWS DBがVercelで利用可能
 
-those of you on zen - we have some issues with our upstream providers traffic routing and some request are being blocked
+AWSの各種データベースが、Vercel Marketplaceおよび生成UIツール「v0」で利用可能となりました。
 
-we are investigating
-
----
-
-## 16. 【MiniMax (official)】最新ニュース
-
-Congrats @kilocode to launch Kilo for Slack. 
-
-Multi-repo by default. Context that sticks. Actions that land.
-
-Excited to partner with @kilocode and show M2.1's long-horizon agentic capability in action.
+Aurora PostgreSQL、Amazon DynamoDB、Aurora DSQLといった本番環境向けのセキュアなデータベースを、ワンクリックで構築できます。セットアップは数秒で完了し、即座にスケーリングが可能です。これにより、Vercel環境におけるデータベースのプロビジョニングと統合が大幅に簡略化されます。
 
 ---
 
-## 17. 【MiniMax (official)】最新ニュース
+## 12. 【OpenCode】GitLab Duo、Claude全モデル対応
 
-RT @SkylerMiao7: Sooner than you expect 😎
+GitLab Duoのサブスクリプションにおいて、OpenCodeが正式に利用可能となりました。
 
----
-
-## 18. 【MiniMax (official)】最新ニュース
-
-San Jose builders: get hands-on with MiniMax and ship faster, stronger 🚀
+本対応により、Anthropic社が提供するClaudeの全モデル（Sonnet、Opus、Haiku）が同サービスを通じて活用できます。ユーザーは開発環境や用途に応じてこれらのAIモデルを選択し、統合することが可能です。GitLab Duoの機能を拡充するこのアップデートにより、AIによるコーディング支援体制がさらに強化されました。
 
 ---
 
-## 19. 【MiniMax (official)】最新ニュース
+## 13. 【MiniMax (official)】Slack新ツールKilo公開
 
-$0.01 in 3mins, don’t sleep🏎️
+@kilocode社は、Slack向けの新ツール「Kilo for Slack」を公開しました。本ツールは標準で複数リポジトリ（Multi-repo）に対応しており、一貫性のあるコンテキスト保持と、確実なアクション実行を特徴としています。
 
----
-
-## 20. 【MiniMax (official)】最新ニュース
-
-The wait is over. M2.1 is now live on @nebiustf  
-
-Builders, this one's for you! Tag a builder who needs to know about this.
+また、今回の提携を通じて、M2.1モデルが備える「長期的なエージェント能力（long-horizon agentic capability）」の実証が行われます。技術的な側面では、複雑なタスクを長期間にわたって自律的に遂行するエージェント機能の有用性が示されています。
 
 ---
 
-## 21. 【StepFun】最新ニュース
+## 14. 【MiniMax (official)】次世代AI、予想より早く登場か
 
-👏🏻Congratulations！Step3-VL-10B was selected for HuggingFace Daily Papers today.
+AI関連の情報発信者であるSkyler Miao氏が、次世代モデルのリリース時期について「予想よりも早い（Sooner than you expect）」と言及しました。
 
-Check it out here：https://t.co/zro7vQUqzh https://t.co/VVxMVGL0P9
-
----
-
-## 22. 【StepFun】最新ニュース
-
-Thoughts，@elonmusk？🤣
+具体的な対象は明示されていませんが、OpenAIのGPT-5やClaudeの最新モデルなど、主要なAIの登場が前倒しになる可能性を示唆しています。現時点で技術的な詳細や具体的な日程は不明ですが、業界の進展が加速していることが伺えます。今後の各社による公式発表が注目されます。
 
 ---
 
-更新日時：2026年01月17日 06:44
+## 15. 【MiniMax (official)】MiniMaxサンノゼ開発支援
+
+サンノゼの開発者を対象に、MiniMaxを活用した開発支援の取り組みが発表されました。
+
+本件は、エンジニアがMiniMaxの技術を直接体験することで、より迅速かつ堅牢な製品開発（Ship）を実現することを目的としています。MiniMaxは高度な生成AI技術を提供する企業であり、開発プロセスの効率化と競争力の向上を支援します。最新のAIモデルを活用し、開発サイクルの加速を目指すエンジニアにとって、実務的な導入と技術習得の重要な機会となります。
+
+---
+
+## 16. 【Z.ai】Z.ai米州限定で無料実験開始
+
+@louszbd氏は、米州時間帯（UTC-3からUTC-8）を対象とした24時間限定の実験を開始しました。本施策では、さらなるデータ収集を目的として、プログラミング支援機能である「coding plan」への無料アクセス権を提供しています。短期間の公開を通じて、特定の地域におけるユーザーの利用動向やフィードバックを収集する狙いがあると考えられます。
+
+---
+
+## 17. 【StepFun】Step3-VLがHF注目論文に
+
+マルチモーダルモデル「Step3-VL-10B」が、Hugging Faceの「Daily Papers」に選出されました。
+
+「Daily Papers」は、機械学習コミュニティにおいて特に注目すべき最新の研究論文を紹介するセクションです。Step3-VL-10Bは100億パラメータ（10B）規模の構成となっており、その技術的な有用性が高く評価された形となります。詳細な研究内容やモデルの仕様については、Hugging Face上の公式ページにて公開されています。
+
+---
+
+更新日時：2026年01月17日 13:25
 
 ---
 
