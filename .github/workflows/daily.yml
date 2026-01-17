@@ -32,6 +32,25 @@ jobs:
           CT0: ${{ secrets.CT0 }}
         run: python main.py
 
+      - name: Generate cover image with date
+        run: |
+          python -c "
+          from src.cover_generator import add_date_to_cover
+          from datetime import datetime
+          import os
+          
+          today = datetime.now()
+          date_str = today.strftime('%Y-%m-%d')
+          output_dir = f'output/{date_str}'
+          os.makedirs(output_dir, exist_ok=True)
+          
+          add_date_to_cover(
+              'assets/cover_template.png',
+              f'{output_dir}/cover.png',
+              today
+          )
+          "
+
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
@@ -54,12 +73,13 @@ jobs:
           path: output/
           retention-days: 30
 
-      - name: Get article content
+      - name: Get article and cover paths
         id: article
         run: |
           # Get today's date in the format used by the output directory
           TODAY=$(date -u +%Y-%m-%d)
           ARTICLE_PATH="output/${TODAY}/article.md"
+          COVER_PATH="output/${TODAY}/cover.png"
           
           echo "Looking for: $ARTICLE_PATH"
           
@@ -72,6 +92,7 @@ jobs:
             LATEST_DIR=$(ls -d output/*/ 2>/dev/null | sort -r | head -1)
             if [ -n "$LATEST_DIR" ] && [ -f "${LATEST_DIR}article.md" ]; then
               ARTICLE_PATH="${LATEST_DIR}article.md"
+              COVER_PATH="${LATEST_DIR}cover.png"
               echo "article_found=true" >> $GITHUB_OUTPUT
               echo "article_path=$ARTICLE_PATH" >> $GITHUB_OUTPUT
               echo "⚠️ Today's article not found, using latest: $ARTICLE_PATH"
@@ -79,6 +100,12 @@ jobs:
               echo "article_found=false" >> $GITHUB_OUTPUT
               echo "❌ No article found"
             fi
+          fi
+          
+          # Check for cover
+          if [ -f "$COVER_PATH" ]; then
+            echo "cover_path=$COVER_PATH" >> $GITHUB_OUTPUT
+            echo "✅ Found cover: $COVER_PATH"
           fi
 
       - name: Send email notification
@@ -89,15 +116,19 @@ jobs:
           server_port: 587
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "🤖 AI最新ニュース【${{ github.run_id }}】"
+          subject: "🍁 Kaede's AI Daily News【${{ github.run_id }}】"
           to: ${{ secrets.EMAIL_TO }}
-          from: AI News Bot <${{ secrets.EMAIL_USERNAME }}>
+          from: Kaede AI News <${{ secrets.EMAIL_USERNAME }}>
           body: |
             本日のAIニュースをお届けします！
+            
+            📝 note.com で投稿する:
+            https://note.com/notes
             
             📎 GitHub で全文を見る: 
             https://github.com/${{ github.repository }}/blob/main/${{ steps.article.outputs.article_path }}
             
             ---
             このメールは GitHub Actions により自動送信されています。
-          attachments: ${{ steps.article.outputs.article_path }}
+          attachments: ${{ steps.article.outputs.article_path }},${{ steps.article.outputs.cover_path }}
+
