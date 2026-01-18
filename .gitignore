@@ -27,3 +27,4 @@ logs/*.log
 
 # Twikit cookies
 cookies.json
+note_cookies.json

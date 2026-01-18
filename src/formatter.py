@@ -96,7 +96,7 @@ class ArticleFormatter:
             return self._format_no_news(date, datetime_str)
 
         lines = [
-            f"# AI最新ニュース【{date}】",
+            f"# カエデのAIニュース【{date}】",
             "",
             "> 本日のAI業界の最新ニュースをお届けします。",
             "",
@@ -124,7 +124,7 @@ class ArticleFormatter:
 
     def _format_no_news(self, date: str, datetime_str: str) -> str:
         """Format article when there's no news."""
-        return f"""# AI最新ニュース【{date}】
+        return f"""# カエデのAIニュース【{date}】
 
 > 本日は特に大きなニュースはありませんでした。
 
