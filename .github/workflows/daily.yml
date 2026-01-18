@@ -37,9 +37,12 @@ jobs:
           python -c "
           from src.cover_generator import add_date_to_cover
           from datetime import datetime
+          from zoneinfo import ZoneInfo
           import os
           
-          today = datetime.now()
+          # Use JST timezone to match main.py
+          jst = ZoneInfo('Asia/Tokyo')
+          today = datetime.now(jst)
           date_str = today.strftime('%Y-%m-%d')
           output_dir = f'output/{date_str}'
           os.makedirs(output_dir, exist_ok=True)
@@ -59,7 +62,8 @@ jobs:
           # Check if there are changes
           if [ -n "$(git status --porcelain output/)" ]; then
             git add output/
-            git commit -m "📰 Daily AI news update - $(date -u +%Y-%m-%d)"
+            # Use JST timezone for commit message
+            git commit -m "📰 Daily AI news update - $(TZ=Asia/Tokyo date +%Y-%m-%d)"
             git push
             echo "✅ Changes committed and pushed"
           else
@@ -76,8 +80,8 @@ jobs:
       - name: Get article and cover paths
         id: article
         run: |
-          # Get today's date in the format used by the output directory
-          TODAY=$(date -u +%Y-%m-%d)
+          # Get today's date in JST timezone to match main.py's output directory
+          TODAY=$(TZ=Asia/Tokyo date +%Y-%m-%d)
           ARTICLE_PATH="output/${TODAY}/article.md"
           COVER_PATH="output/${TODAY}/cover.png"
           
