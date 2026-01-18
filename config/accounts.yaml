@@ -71,6 +71,18 @@ accounts:
     category: "US_Company"
   - username: "huggingface"
     category: "US_Company"
+  - username: "kaggle"
+    category: "US_Company"
+  - username: "ManusAI"
+    category: "US_Company"
+  - username: "GoogleAI"
+    category: "US_Company"
+  - username: "kirodotdev"
+    category: "US_Company"
+  - username: "googleaidevs"
+    category: "US_Company"
+  - username: "v0"
+    category: "US_Company"
 
   # French Companies
   - username: "MistralAI"
@@ -100,6 +112,8 @@ accounts:
   - username: "StepFun_ai"
     category: "Chinese_Company"
   - username: "SiliconFlowAI"
+    category: "Chinese_Company"
+  - username: "AntLingAGI"
     category: "Chinese_Company"
 
   # Other
