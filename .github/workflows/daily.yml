@@ -117,14 +117,32 @@ jobs:
       - name: Publish to note.com
         id: note
         if: steps.article.outputs.article_found == 'true'
+        continue-on-error: true  # Don't fail the whole workflow if this step fails
         env:
           NOTE_COOKIES: ${{ secrets.NOTE_COOKIES }}
         run: |
+          # Check if NOTE_COOKIES is set
+          if [ -z "$NOTE_COOKIES" ]; then
+            echo "⚠️ NOTE_COOKIES secret is not set. Skipping note.com publish."
+            echo "draft_url=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
           # Save cookies to file
           echo "$NOTE_COOKIES" > note_cookies.json
           
+          # Verify cookies file is valid JSON
+          if ! python -c "import json; json.load(open('note_cookies.json'))" 2>/dev/null; then
+            echo "❌ Invalid JSON in NOTE_COOKIES"
+            echo "draft_url=" >> $GITHUB_OUTPUT
+            rm -f note_cookies.json
+            exit 0
+          fi
+          
+          echo "✅ Cookies file created successfully"
+          
           # Run publisher and capture output
-          OUTPUT=$(python src/note_publisher.py publish "${{ steps.article.outputs.article_path }}" "${{ steps.article.outputs.cover_path }}" 2>&1)
+          OUTPUT=$(python src/note_publisher.py publish "${{ steps.article.outputs.article_path }}" "${{ steps.article.outputs.cover_path }}" 2>&1) || true
           echo "$OUTPUT"
           
           # Extract draft URL from output
