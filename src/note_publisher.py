@@ -347,18 +347,12 @@ async def create_draft(
                 for i, line in enumerate(body_lines):
                     stripped = line.strip()
                     if stripped:
-                        # 检测X/Twitter URL，使用嵌入功能
+                        # X URL加上链接emoji使其更明显
                         if is_x_url(stripped):
-                            embed_success = await embed_x_url(page, stripped)
-                            if not embed_success:
-                                # 嵌入失败，回退到普通文本
-                                await page.keyboard.type(f"🔗 {stripped}", delay=0)
-                                await page.keyboard.press('Enter')
+                            await page.keyboard.type(f"🔗 {stripped}", delay=0)
                         else:
                             await page.keyboard.type(line, delay=0)
-                            await page.keyboard.press('Enter')
-                    else:
-                        await page.keyboard.press('Enter')
+                    await page.keyboard.press('Enter')
 
                     if i % 50 == 0 and i > 0:
                         await page.wait_for_timeout(500)
