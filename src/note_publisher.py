@@ -13,6 +13,107 @@ from playwright.async_api import async_playwright
 COOKIES_FILE = Path(__file__).parent.parent / "note_cookies.json"
 
 
+def is_x_url(line: str) -> bool:
+    """检测是否为X/Twitter URL"""
+    return bool(re.match(r'https://(x\.com|twitter\.com)/\w+/status/\d+', line.strip()))
+
+
+async def embed_x_url(page, url: str) -> bool:
+    """
+    使用note.com嵌入功能插入X URL
+    返回True表示成功，False表示失败
+    """
+    try:
+        # 确保光标在内容区域
+        content_area = page.locator('.ProseMirror[contenteditable="true"]')
+        await content_area.click()
+        await page.wait_for_timeout(300)
+
+        # 方法1: 尝试点击左侧的+按钮
+        # note.com的+按钮通常在段落左侧
+        plus_btn = None
+
+        # 尝试多种选择器找到+按钮
+        selectors = [
+            'button[aria-label="ブロックを追加"]',
+            'button[aria-label="Add block"]',
+            '[data-testid="add-block-button"]',
+        ]
+
+        for selector in selectors:
+            btn = page.locator(selector).first
+            if await btn.count() > 0:
+                plus_btn = btn
+                break
+
+        # 如果没找到，尝试通过位置查找（左侧的按钮）
+        if not plus_btn or await plus_btn.count() == 0:
+            buttons = page.locator('button')
+            count = await buttons.count()
+            for i in range(count):
+                btn = buttons.nth(i)
+                try:
+                    bbox = await btn.bounding_box()
+                    if bbox and bbox['x'] < 100:  # 左侧按钮
+                        inner_text = await btn.inner_text()
+                        if '+' in inner_text or inner_text == '':
+                            plus_btn = btn
+                            break
+                except:
+                    continue
+
+        if not plus_btn or await plus_btn.count() == 0:
+            print(f"⚠️ 未找到+按钮，跳过嵌入: {url[:50]}...")
+            return False
+
+        await plus_btn.click()
+        await page.wait_for_timeout(500)
+
+        # 选择「埋め込み」或「＜＞」选项
+        embed_option = None
+        embed_selectors = [
+            'text=埋め込み',
+            'text=＜＞',
+            'text=貼り付け',
+            '[data-testid="embed-option"]',
+        ]
+
+        for selector in embed_selectors:
+            opt = page.locator(selector).first
+            if await opt.count() > 0:
+                embed_option = opt
+                break
+
+        if not embed_option or await embed_option.count() == 0:
+            # 关闭菜单
+            await page.keyboard.press('Escape')
+            print(f"⚠️ 未找到埋め込み选项，跳过嵌入: {url[:50]}...")
+            return False
+
+        await embed_option.click()
+        await page.wait_for_timeout(500)
+
+        # 在输入框中填入URL
+        url_input = page.locator('input[type="text"], input[placeholder*="URL"], input[placeholder*="url"]').first
+        if await url_input.count() > 0:
+            await url_input.fill(url)
+            await page.keyboard.press('Enter')
+            await page.wait_for_timeout(2000)  # 等待嵌入加载
+            print(f"✅ 已嵌入X链接: {url[:50]}...")
+            return True
+        else:
+            # 尝试直接在页面输入
+            await page.keyboard.type(url)
+            await page.keyboard.press('Enter')
+            await page.wait_for_timeout(2000)
+            print(f"✅ 已嵌入X链接(备用): {url[:50]}...")
+            return True
+
+    except Exception as e:
+        print(f"⚠️ 嵌入失败: {e}")
+        return False
+
+
 async def create_draft(
     title: str,
     content: str,
@@ -242,12 +343,23 @@ async def create_draft(
                 await content_area.click()
                 await page.keyboard.press('End')  # 移动到末尾
                 await page.keyboard.press('Enter')
-                
+
                 for i, line in enumerate(body_lines):
-                    if line.strip():
-                        await page.keyboard.type(line, delay=0)
-                    await page.keyboard.press('Enter')
-                    
+                    stripped = line.strip()
+                    if stripped:
+                        # 检测X/Twitter URL，使用嵌入功能
+                        if is_x_url(stripped):
+                            embed_success = await embed_x_url(page, stripped)
+                            if not embed_success:
+                                # 嵌入失败，回退到普通文本
+                                await page.keyboard.type(f"🔗 {stripped}", delay=0)
+                                await page.keyboard.press('Enter')
+                        else:
+                            await page.keyboard.type(line, delay=0)
+                            await page.keyboard.press('Enter')
+                    else:
+                        await page.keyboard.press('Enter')
+
                     if i % 50 == 0 and i > 0:
                         await page.wait_for_timeout(500)
                 
