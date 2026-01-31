@@ -18,6 +18,11 @@ def is_x_url(line: str) -> bool:
     return bool(re.match(r'https://(x\.com|twitter\.com)/\w+/status/\d+', line.strip()))
 
 
+def has_markdown_link(line: str) -> bool:
+    """检测是否包含markdown链接语法 [text](url)"""
+    return bool(re.search(r'\[.+\]\(https?://.+\)', line))
+
+
 async def embed_x_url(page, url: str) -> bool:
     """
     使用note.com嵌入功能插入X URL
@@ -347,9 +352,11 @@ async def create_draft(
                 for i, line in enumerate(body_lines):
                     stripped = line.strip()
                     if stripped:
-                        # X URL加上链接emoji使其更明显
-                        if is_x_url(stripped):
-                            await page.keyboard.type(f"🔗 {stripped}", delay=0)
+                        # 含markdown链接的行使用粘贴（触发markdown解析）
+                        if has_markdown_link(stripped):
+                            await page.evaluate(f'navigator.clipboard.writeText({repr(stripped)})')
+                            await page.keyboard.press('Control+v')  # Linux (GitHub Actions)
+                            await page.wait_for_timeout(200)
                         else:
                             await page.keyboard.type(line, delay=0)
                     await page.keyboard.press('Enter')
