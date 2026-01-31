@@ -61,18 +61,12 @@ class ArticleFormatter:
             ""
         ]
 
-        # Add images if present (Twitter CDN URLs)
-        if item.images:
-            for img in item.images:
-                lines.append(f"![{item.source}]({img})")
-            lines.append("")
-
         # Add summary
         lines.append(item.summary_ja)
         lines.append("")
 
-        # Add link to original tweet
-        lines.append(f"🔗 [原文を見る]({item.url})")
+        # Add X/Twitter URL directly (note.com auto-embeds as card with images)
+        lines.append(f"🔗 原文を見る：{item.url}")
         lines.append("")
 
         lines.append("---")
