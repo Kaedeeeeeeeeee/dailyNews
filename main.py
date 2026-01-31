@@ -130,7 +130,7 @@ async def main():
             title=tweet.title,
             summary_ja=tweet.summary,
             url=tweet.url,
-            images=[],  # No images
+            images=tweet.image_urls or [],  # Twitter image URLs
             emoji="",
             created_at=tweet.created_at
         )

@@ -25,6 +25,7 @@ class ProcessedTweet:
     summary: str
     title: str
     created_at: str
+    image_urls: list[str] = None  # Twitter image URLs
 
 
 class AIProcessor:
@@ -136,7 +137,8 @@ class AIProcessor:
                     is_ai_related=True,
                     summary=summary,
                     title=title,
-                    created_at=tweet.created_at.isoformat() if tweet.created_at else ""
+                    created_at=tweet.created_at.isoformat() if tweet.created_at else "",
+                    image_urls=tweet.image_urls if hasattr(tweet, 'image_urls') else []
                 )
             except json.JSONDecodeError as e:
                 print(f"⚠️ JSON parse error for @{tweet.author_username}: {e}")

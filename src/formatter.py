@@ -33,7 +33,7 @@ class ArticleFormatter:
         processed_tweet,
         summary_ja: str,
         title: str,
-        local_images: list[str],
+        image_urls: list[str],
         index: int
     ) -> NewsItem:
         """Create a NewsItem from processed data."""
@@ -42,7 +42,7 @@ class ArticleFormatter:
             title=title,
             summary_ja=summary_ja,
             url=processed_tweet.url,
-            images=[f"./images/{Path(p).name}" for p in local_images],
+            images=image_urls,  # Use Twitter CDN URLs directly
             emoji="",
             created_at=processed_tweet.created_at
         )
@@ -61,18 +61,22 @@ class ArticleFormatter:
             ""
         ]
 
-        # Add images if present
+        # Add images if present (Twitter CDN URLs)
         if item.images:
             for img in item.images:
-                lines.append(f"![{item.source}の画像]({img})")
+                lines.append(f"![{item.source}]({img})")
             lines.append("")
 
         # Add summary
         lines.append(item.summary_ja)
         lines.append("")
-        
+
+        # Add link to original tweet
+        lines.append(f"🔗 [原文を見る]({item.url})")
+        lines.append("")
+
         lines.append("---")
-        
+
         return "\n".join(lines)
 
     def format_article(
