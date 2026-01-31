@@ -65,8 +65,8 @@ class ArticleFormatter:
         lines.append(item.summary_ja)
         lines.append("")
 
-        # Add link with markdown syntax for note.com
-        lines.append(f"🔗 [原文を見る]({item.url})")
+        # Add X URL on its own line (no emoji!) - note.com auto-embeds on Enter
+        lines.append(item.url)
         lines.append("")
 
         lines.append("---")

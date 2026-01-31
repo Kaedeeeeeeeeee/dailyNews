@@ -352,14 +352,13 @@ async def create_draft(
                 for i, line in enumerate(body_lines):
                     stripped = line.strip()
                     if stripped:
-                        # 含markdown链接的行使用粘贴（触发markdown解析）
-                        if has_markdown_link(stripped):
-                            await page.evaluate(f'navigator.clipboard.writeText({repr(stripped)})')
-                            await page.keyboard.press('Control+v')  # Linux (GitHub Actions)
-                            await page.wait_for_timeout(200)
-                        else:
-                            await page.keyboard.type(line, delay=0)
-                    await page.keyboard.press('Enter')
+                        await page.keyboard.type(line, delay=0)
+                        await page.keyboard.press('Enter')
+                        # X URL需要额外等待让note.com自动嵌入
+                        if is_x_url(stripped):
+                            await page.wait_for_timeout(1500)  # 等待嵌入加载
+                    else:
+                        await page.keyboard.press('Enter')
 
                     if i % 50 == 0 and i > 0:
                         await page.wait_for_timeout(500)
