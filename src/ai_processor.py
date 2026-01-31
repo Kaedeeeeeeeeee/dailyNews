@@ -184,6 +184,43 @@ class AIProcessor:
         print(f"📝 Processed: {len(processed)}/{len(tweets)} tweets are AI-related")
         return processed
 
+    async def generate_greeting(self, news_count: int, date_str: str) -> str:
+        """
+        Generate a personalized daily greeting.
+
+        Args:
+            news_count: Number of news items for today
+            date_str: Date string (e.g., "2026年1月31日")
+
+        Returns:
+            A short greeting message
+        """
+        prompt = f"""あなたはAIニュースキャスター「カエデ」です。
+今日は{date_str}、{news_count}件のAIニュースがあります。
+
+読者への短い挨拶文を1文（30文字以内）で書いてください。
+- 親しみやすく、明るいトーン
+- 「です・ます」調
+- 季節、曜日、ニュースの量などを参考に
+- 例：「今日もAI業界は賑やかですね！」「週末明け、注目の発表が続きます！」
+
+挨拶文のみを出力："""
+
+        try:
+            response = await asyncio.to_thread(
+                self.client.models.generate_content,
+                model=self.model_name,
+                contents=prompt
+            )
+            greeting = response.text.strip().strip('「」"\'')
+            if greeting:
+                return greeting
+        except Exception as e:
+            print(f"⚠️ Greeting generation failed: {e}")
+
+        # Fallback to default greeting
+        return "本日のAI業界の最新ニュースをお届けします。"
+
 
 async def main():
     """Test the AI processor."""

@@ -122,7 +122,7 @@ async def main():
     # Step 4: Format article (title already generated in AI processing)
     print("\n📝 Step 4: Generating article...")
     news_items = []
-    
+
     for i, tweet in enumerate(processed_tweets):
         # Create news item (title and summary already available from AI processor)
         news_item = NewsItem(
@@ -136,8 +136,12 @@ async def main():
         )
         news_items.append(news_item)
 
+    # Generate personalized greeting
+    greeting = await ai_processor.generate_greeting(len(news_items), date_str)
+    print(f"👋 Greeting: {greeting}")
+
     # Generate and save article
-    article = formatter.format_article(date_str, datetime_str, news_items)
+    article = formatter.format_article(date_str, datetime_str, news_items, greeting)
     output_path = formatter.save_article(article, str(output_dir))
 
     # Summary

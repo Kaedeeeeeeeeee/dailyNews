@@ -77,16 +77,18 @@ class ArticleFormatter:
         self,
         date: str,
         datetime_str: str,
-        news_items: list[NewsItem]
+        news_items: list[NewsItem],
+        greeting: str = "本日のAI業界の最新ニュースをお届けします。"
     ) -> str:
         """
         Format the complete article.
-        
+
         Args:
             date: Date string (e.g., "2026年1月17日")
             datetime_str: Full datetime string
             news_items: List of NewsItem objects
-            
+            greeting: Daily greeting message (AI-generated)
+
         Returns:
             Complete Markdown article
         """
@@ -96,7 +98,7 @@ class ArticleFormatter:
         lines = [
             f"# カエデのAIニュース【{date}】",
             "",
-            "> 本日のAI業界の最新ニュースをお届けします。",
+            f"> {greeting}",
             "",
             self.generate_toc(news_items),
             "",
@@ -109,14 +111,7 @@ class ArticleFormatter:
             lines.append(self.format_news_item(item, i))
             lines.append("")
 
-        # Footer
-        lines.extend([
-            f"更新日時：{datetime_str}",
-            "",
-            "---",
-            "",
-            "*このニュースは自動収集・翻訳されています。*"
-        ])
+        # Footer removed - user requested to remove update time and auto-collection notice
 
         return "\n".join(lines)
 
@@ -127,12 +122,6 @@ class ArticleFormatter:
 > 本日は特に大きなニュースはありませんでした。
 
 明日また最新ニュースをお届けします！
-
-更新日時：{datetime_str}
-
----
-
-*このニュースは自動収集・翻訳されています。*
 """
 
     def save_article(
